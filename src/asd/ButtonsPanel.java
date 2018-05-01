@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class ButtonsPanel extends JPanel{
 	
-	public ButtonsPanel(ArrayField arrayField, ArrayPanel arrayPanel ) {
+	public ButtonsPanel(ArrayField arrayField, JPanel arrayPanel ) {
 		for (int i = 1; i < 10; i++){
 			NumButton btnInit = new NumButton(i, arrayField, arrayPanel); 
 			this.add(btnInit);

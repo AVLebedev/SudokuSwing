@@ -2,6 +2,8 @@ package asd;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
+import asd.GamesLite.Main;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -53,7 +55,7 @@ public class SudokuCell extends JLabel implements MouseListener, KeyListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Lect2Win.currentCell = this;
+		Main.currentCell = this;
 		if(isEnabled()) {
 			this.setBackground(Color.GREEN);
 		} else {

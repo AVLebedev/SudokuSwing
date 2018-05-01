@@ -6,13 +6,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class NumButton extends JButton implements ActionListener {
 
 	private ArrayField arrayField;
-	private ArrayPanel arrayPanel;
+	private JPanel arrayPanel;
 	
-	public NumButton(Integer num, ArrayField field, ArrayPanel panel){
+	public NumButton(Integer num, ArrayField field, JPanel panel){
 		this.setHorizontalAlignment(CENTER);
 		this.setVerticalAlignment(CENTER);
 		this.addActionListener(this);

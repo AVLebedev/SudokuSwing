@@ -1,26 +1,17 @@
 package asd;
 
 import asd.GamesLite.Core;
+import asd.GamesLite.Main;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.*;
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 
 public class ArrayField {
@@ -31,7 +22,7 @@ public class ArrayField {
 	private int m;
 	private JFrame frame;
 
-	public ArrayField(ArrayPanel panel, JFrame frame) {
+	public ArrayField(JPanel panel, JFrame frame) {
 		n = 9;
 		m = 9;
 		array = Core.playingField;
@@ -157,8 +148,8 @@ public class ArrayField {
 	}
 	
 	private void highlightCellsByNumber(JPanel panel){
-		CellPosition currentCellPos = Lect2Win.currentCell.getPosition();
-		String currentCellValue = Lect2Win.currentCell.getText();
+		CellPosition currentCellPos = Main.currentCell.getPosition();
+		String currentCellValue = Main.currentCell.getText();
 		for(Component cell : panel.getComponents())	
 			if(SudokuCell.class.isInstance(cell)){
 				boolean valueIsEqual = ((SudokuCell)cell).getText().equals(currentCellValue);
@@ -275,10 +266,10 @@ public class ArrayField {
 	}
 	
 	public void setCellValue(JPanel arrayPanel, String value){
-		if (Lect2Win.currentCell != null){
-			CellPosition pos = Lect2Win.currentCell.getPosition();
+		if (Main.currentCell != null){
+			CellPosition pos = Main.currentCell.getPosition();
 			array[pos.x][pos.y] = Integer.parseInt(value);	
-			Lect2Win.currentCell.setText(value);
+			Main.currentCell.setText(value);
 			highlightCellsByNumber(arrayPanel);
 		}
 		int foolCount = 0;
