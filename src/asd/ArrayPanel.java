@@ -5,11 +5,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import asd.GamesLite.PainterPanel;
 
-public class ArrayPanel extends PainterPanel {
+public class ArrayPanel extends JPanel {
 
 	private int n, m;
 
@@ -19,7 +20,6 @@ public class ArrayPanel extends PainterPanel {
 		this.setLayout(new GridLayout(n, m, 5, 5));
 	}
 
-	@Override
 	public void paint(Graphics g)  {
 		super.paint(g);		
 		drawArray(g, this.getWidth(), this.getHeight());
