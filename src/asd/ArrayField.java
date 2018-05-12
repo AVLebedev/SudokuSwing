@@ -21,13 +21,14 @@ public class ArrayField {
 	private int n;
 	private int m;
 	private JFrame frame;
+	JPanel panel;
 
-	public ArrayField(JPanel panel, JFrame frame) {
+	public ArrayField(JFrame frame, JPanel panel) {
 		n = 9;
 		m = 9;
-		array = Core.playingField;
-//		array = new int[n][m];
+		array = new int[n][m];
 		this.frame = frame;
+		this.panel = panel;
 	}
 	
 	private int levelCounter;
@@ -107,7 +108,7 @@ public class ArrayField {
 		};
 	}
 	
-	private void start(JPanel panel){
+	private void start(){
 		panel.setBackground(Color.WHITE);
 		for (int i=0; i<n; i++)
 			for (int j=0; j<m; j++){
@@ -118,15 +119,15 @@ public class ArrayField {
 					cell.setText(String.valueOf(num));
 					cell.setEnabled(false);
 				}
-				addCellListener(panel, cell);
+				addCellListener(cell);
 			}
 	}
 	
-	private void addCellListener(JPanel panel, SudokuCell cell){
+	private void addCellListener(SudokuCell cell){
 		cell.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				highlightCellsByNumber(panel);						
+				highlightCellsByNumber();						
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -147,7 +148,7 @@ public class ArrayField {
 		});
 	}
 	
-	private void highlightCellsByNumber(JPanel panel){
+	private void highlightCellsByNumber(){
 		CellPosition currentCellPos = Main.currentCell.getPosition();
 		String currentCellValue = Main.currentCell.getText();
 		for(Component cell : panel.getComponents())	
@@ -163,11 +164,11 @@ public class ArrayField {
 			}
 	}
 	
-	public void initStart(JPanel panel, int levelNum){
+	public void initStart(int levelNum){
 		levelCounter = levelNum - 1;
-		initNext(panel);
+		initNext();
 	}
-	public void initNext(JPanel panel){
+	public void initNext(){
 
 		if(levelCounter == 4)
 			return;
@@ -192,12 +193,12 @@ public class ArrayField {
 				break;
 		}
 		
-		start(panel);
+		start();
 		panel.repaint();
 
 	}
 	
-	public void initBack(JPanel panel){
+	public void initBack(){
 
 		if(levelCounter == 0)
 			return;
@@ -221,34 +222,34 @@ public class ArrayField {
 				init4();
 				break;
 		}
-		start(panel);
+		start();
 		panel.repaint();
 
 	}
 	
-	private void finish(JPanel panel){
-		resetValidation(panel);
-		if(isValid(panel)){
+	private void finish(){
+		resetValidation();
+		if(isValid()){
 			int dialogResult = JOptionPane.showConfirmDialog(frame, 
 					"Вы выиграли! Перейти на следующий уровень?",
                     "Победа!",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 			if(dialogResult == JOptionPane.YES_OPTION){
-		    	initNext(panel);
+		    	initNext();
 			}
 		} else {
 			JOptionPane.showMessageDialog(frame, "Вы проиграли! Исправьте ошибки");
 		}
 	}
 	
-	private void resetValidation(JPanel panel){
+	private void resetValidation(){
 		for(Component c : panel.getComponents())
 			if(SudokuCell.class.isInstance(c))
 				c.setBackground(Color.WHITE);
 	}
 	
-	private boolean isValid(JPanel panel){
+	private boolean isValid(){
 		SudokuChecker checker = new SudokuChecker();
 		int[][] arrayCopy = new int[n][m];
 		for (int i=0; i<9; i++)
@@ -265,21 +266,21 @@ public class ArrayField {
 		return false;
 	}
 
-	public void setCellValue(JPanel arrayPanel, String value){
+	public void setCellValue(String value){
 		if (Main.currentCell == null || Main.currentCell.isEnabled() == false)
 			return;
 		
 		CellPosition pos = Main.currentCell.getPosition();
 		array[pos.x][pos.y] = Integer.parseInt(value);	
 		Main.currentCell.setText(value);
-		highlightCellsByNumber(arrayPanel);
+		highlightCellsByNumber();
 
 		int foolCount = 0;
 		for(int i = 0; i < 9; i++)
 			if (IntStream.of(array[i]).anyMatch(x -> x == 0) == false)
 				foolCount++;
 			if (foolCount == 9)
-				finish(arrayPanel);
+				finish();
 	}
 
 	public String toString() {
@@ -295,5 +296,9 @@ public class ArrayField {
 		}
 
 		return str;
+	}
+	
+	public void goUp(){
+//		Main.currentCell = 
 	}
 }

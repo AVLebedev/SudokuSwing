@@ -2,23 +2,20 @@ package asd.GamesLite;
 
 import java.util.*;
 
+import asd.ArrayField;
+
 public class Core {
+
+    /* Поля для создания игры */
     private static Main app;
+    private static ArrayField playingField;
+    public static boolean startGame = false;
     private static boolean isPause = true;
 
-    /* Высота и ширина игрового поля */
-    public static int n = 5;
-    public static int m = 5;
-
-    /* Стандартные поля для создания игры */
-    public static int[][] playingField;
-    public static boolean startGame = false;
-
-    /* TODO: Дополнительные поля для создания игры */
-
     /* Стандартные методы для создания игры */
-    public static void startGame(Main main) {
+    public static void startGame(Main main, ArrayField field) {
     	app = main;
+    	playingField = field;
         startGame = true;
     }
 

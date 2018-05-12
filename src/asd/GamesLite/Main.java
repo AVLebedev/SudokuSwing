@@ -82,7 +82,7 @@ public class Main {
 		frame.getContentPane().add(menuPanel);
 
 		panel = new PainterPanel();
-		arrayField = new ArrayField(panel, frame);
+		arrayField = new ArrayField(frame, panel);
 		panel.setBorder(new LineBorder(Color.BLACK, 3));
 		panel.setBounds(150, 50, 256, 256);
 		frame.getContentPane().add(panel);
@@ -106,8 +106,8 @@ public class Main {
 		btnInit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (Core.startGame == false) {
-					Controller.start(self);
-					arrayField.initStart(panel, 0);
+					Controller.start(self, arrayField);
+					arrayField.initStart(0);
 					btnInit.setText("Продолжить");
 				}
 				hideMenu();
@@ -134,7 +134,7 @@ public class Main {
 		btnResume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Core.startGame = true;
-				arrayField.initStart(panel, 0);
+				arrayField.initStart(0);
 				btnInit.setText("Продолжить");
 				hideMenu();
 			}
@@ -158,7 +158,7 @@ public class Main {
 		btnInit1 = new JButton("Назад");
 		btnInit1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initBack(panel);
+				arrayField.initBack();
 			}
 		});
 		btnInit1.addKeyListener(keyAdapter);
@@ -168,7 +168,7 @@ public class Main {
 		btnInit2 = new JButton("Вперёд");
 		btnInit2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initNext(panel);
+				arrayField.initNext();
 			}
 		});
 		btnInit2.addKeyListener(keyAdapter);

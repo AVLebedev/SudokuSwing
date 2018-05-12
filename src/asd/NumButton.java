@@ -33,7 +33,7 @@ public class NumButton extends JButton implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		arrayField.setCellValue(arrayPanel, this.getText());
+		arrayField.setCellValue(this.getText());
 	}
 }
 

@@ -2,10 +2,12 @@ package asd.GamesLite;
 
 import java.awt.event.*;
 
+import asd.ArrayField;
+
 public class Controller {
-	public static void start(Main main) {
+	public static void start(Main main, ArrayField field) {
 		/* Стандартные методы запуска игры */
-		Core.startGame(main);
+		Core.startGame(main, field);
 	}
 
 	public static void controlKey(int key) {
