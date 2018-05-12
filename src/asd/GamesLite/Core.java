@@ -25,20 +25,17 @@ public class Core {
     public static void goUp() {
         // Обработка нажатой клавиши вверх
     }
-
     public static void goDown() {
         // Обработка нажатой клавиши вниз
     }
-
     public static void goLeft() {
         // Обработка нажатой клавиши влево
     }
-
     public static void goRight() {
         // Обработка нажатой клавиши вправо
     }
 
-    /* TODO: Дополнительные методы обработки нажатых клавиш */
+    /* Дополнительные методы обработки нажатых клавиш */
     public static void switchMenu(){
     	if(isPause == false){
     		app.hideMenu();
@@ -48,5 +45,8 @@ public class Core {
     		app.showMenu();
     		isPause = false;
     	}
+    }    
+    public static void setCellValue(String value){
+    	playingField.setCellValue(value);
     }
 }

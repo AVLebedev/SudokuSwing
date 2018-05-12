@@ -15,7 +15,7 @@ public class ButtonsPanel extends JPanel{
 	
 	public ButtonsPanel(ArrayField arrayField, JPanel arrayPanel ) {
 		for (int i = 1; i < 10; i++){
-			NumButton btnInit = new NumButton(i, arrayField, arrayPanel); 
+			NumButton btnInit = new NumButton(i, arrayField); 
 			this.add(btnInit);
 		}		
 		this.setLayout(new GridLayout(3, 3));
