@@ -14,6 +14,7 @@ import asd.ButtonsPanel;
 import asd.SudokuCell;
 
 public class Main {
+	private KeyAdapter keyAdapter;
 
 	private JFrame frame;
 	private ArrayField arrayField;
@@ -24,8 +25,6 @@ public class Main {
 	private JButton btnMenu;
 	private JButton btnInit1;
 	private JButton btnInit2;
-	
-	boolean gameStarted;
 
 	public static SudokuCell currentCell;
 
@@ -63,7 +62,14 @@ public class Main {
 	 * 
 	 */
 	void initialize() {
-		gameStarted = false;
+		/* Передача обработки нажатия клавиш контроллеру */
+		keyAdapter = new KeyAdapter(){
+			public void keyPressed(KeyEvent e){
+				Controller.controlKey(e.getKeyCode());
+			}
+		};
+		
+		/* Инициализация элементов */
 		frame = new JFrame();
 		frame.setBounds(300, 100, 600, 550);
 		frame.setResizable(false);
@@ -83,18 +89,6 @@ public class Main {
 		panel.setBounds(150, 50, 256, 256);
 		frame.getContentPane().add(panel);
 
-		// Чтобы наша панель принимала нажатия клавиш
-		// мыши или клавиатуры, следует установить фокус на нее
-		panel.setFocusable(true);
-
-		/* Ообработчики нажатия клавиш */
-		// Нажатия клавиш клавиатуры
-		panel.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				panel.repaint();
-			}
-		});
-
 		panel1 = new ButtonsPanel(arrayField, panel);
 		panel1.setBounds(153, 310, 250, 200);
 		frame.getContentPane().add(panel1);
@@ -105,55 +99,52 @@ public class Main {
 				showMenu();				
 			}
 		});
-		btnMenu.addKeyListener(new KeyAdapter(){
-			public void keyPressed(KeyEvent e){
-				Controller.controlKey(e.getKeyCode());
-			}
-		});
+		btnMenu.addKeyListener(keyAdapter);
 		btnMenu.setBounds(150, 11, 256, 28);
 		frame.getContentPane().add(btnMenu);
 
-		
+		Main self = this;
 		JButton btnInit = new JButton("Новая игра");
 		btnInit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (gameStarted == false) {
-					gameStarted = true;
+				if (Core.startGame == false) {
+					Controller.start(self);
 					arrayField.initStart(panel, 0);
 					btnInit.setText("Продолжить");
 				}
 				hideMenu();
 			}
 		});
+		btnInit.addKeyListener(keyAdapter);
 		btnInit.setFont(new Font(btnInit.getFont().getFamily(), Font.PLAIN, 20));
 		btnInit.setMaximumSize(new Dimension(200, btnInit.getMaximumSize().height));
 		menuPanel.add(btnInit);
-		
-		JButton btnResume = new JButton("Загрузить игру");
-		btnInit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (gameStarted == false) {
-					gameStarted = true;
-					arrayField.initStart(panel, 0);
-					btnInit.setText("Продолжить");
-				}
-				hideMenu();
-			}
-		});
-		btnResume.setFont(btnInit.getFont());
-		btnResume.setMaximumSize(btnInit.getMaximumSize());
-		menuPanel.add(btnResume);
 		
 		JButton btnSave = new JButton("Сохранить");
 		btnSave.setEnabled(false);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-								
+				//ToDo: реализовать сохранение игры				
 			}
 		});
+		btnSave.addKeyListener(keyAdapter);
 		btnSave.setFont(btnInit.getFont());
 		btnSave.setMaximumSize(btnInit.getMaximumSize());
 		menuPanel.add(btnSave);
+		
+		JButton btnResume = new JButton("Загрузить игру");
+		btnResume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Core.startGame = true;
+				arrayField.initStart(panel, 0);
+				btnInit.setText("Продолжить");
+				hideMenu();
+			}
+		});
+		btnResume.addKeyListener(keyAdapter);
+		btnResume.setFont(btnInit.getFont());
+		btnResume.setMaximumSize(btnInit.getMaximumSize());
+		menuPanel.add(btnResume);
 		
 		JButton btnExit = new JButton("Выход");
 		btnExit.addActionListener(new ActionListener() {
@@ -161,6 +152,7 @@ public class Main {
 				System.exit(0);				
 			}
 		});
+		btnExit.addKeyListener(keyAdapter);
 		btnExit.setFont(btnInit.getFont());
 		btnExit.setMaximumSize(btnInit.getMaximumSize());
 		menuPanel.add(btnExit);
@@ -171,6 +163,7 @@ public class Main {
 				arrayField.initBack(panel);
 			}
 		});
+		btnInit1.addKeyListener(keyAdapter);
 		btnInit1.setBounds(50, 450, 80, 28);
 		frame.getContentPane().add(btnInit1);
 
@@ -180,15 +173,12 @@ public class Main {
 				arrayField.initNext(panel);
 			}
 		});
+		btnInit2.addKeyListener(keyAdapter);
 		btnInit2.setBounds(420, 450, 80, 28);
 		frame.getContentPane().add(btnInit2);
-
-		showMenu();
-		/* Методы для запуска игры */
-		// Controller.start();
 	}
 
-	private void showMenu() {
+	public void showMenu() {
 		btnMenu.setVisible(false);
 		panel.setVisible(false);
 		panel1.setVisible(false);
@@ -197,7 +187,7 @@ public class Main {
 		menuPanel.setVisible(true);
 	}
 
-	private void hideMenu() {
+	public void hideMenu() {
 		btnMenu.setVisible(true);
 		panel.setVisible(true);
 		panel1.setVisible(true);

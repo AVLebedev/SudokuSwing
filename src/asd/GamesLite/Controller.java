@@ -3,27 +3,30 @@ package asd.GamesLite;
 import java.awt.event.*;
 
 public class Controller {
-    public static void start() {
-        /* —тандартные методы запуска игры */
-        Core.startGame();
+	public static void start(Main main) {
+		/* —тандартные методы запуска игры */
+		Core.startGame(main);
+	}
 
-        /* TODO: ƒополнительные методы запуска игры */
-
-    }
-
-    public static void controlKey(int key) {
-        /* —тандартна€ обработка нажати€ клавиш клавиатуры */
-        if (KeyEvent.VK_UP == key) {
-            Core.goUp();
-        } else if (KeyEvent.VK_DOWN == key) {
-            Core.goDown();
-        } else if (KeyEvent.VK_LEFT == key) {
-            Core.goLeft();
-        } else if (KeyEvent.VK_RIGHT == key) {
-            Core.goRight();
-        }
-
-        /* TODO: ƒополнительна€ обработка нажати€ клавиш клавиатуры */
-
-    }
+	public static void controlKey(int key) {
+		/* ќбработка нажати€ клавиш клавиатуры */
+		if(Core.startGame == false)
+			return;
+		switch (key) {
+			case (KeyEvent.VK_ESCAPE):
+				Core.switchMenu();
+			case (KeyEvent.VK_UP):
+				Core.goUp();
+				break;
+			case (KeyEvent.VK_DOWN):
+				Core.goDown();
+				break;
+			case (KeyEvent.VK_LEFT):
+				Core.goLeft();
+				break;
+			case (KeyEvent.VK_RIGHT):
+				Core.goRight();
+				break;
+			}
+	}
 }

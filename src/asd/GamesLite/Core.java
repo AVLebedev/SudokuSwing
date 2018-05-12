@@ -3,8 +3,8 @@ package asd.GamesLite;
 import java.util.*;
 
 public class Core {
-    /* Генератол случайных чисел (random) */
-    private static Random random = new Random(System.currentTimeMillis());
+    private static Main app;
+    private static boolean isPause = true;
 
     /* Высота и ширина игрового поля */
     public static int n = 5;
@@ -12,19 +12,14 @@ public class Core {
 
     /* Стандартные поля для создания игры */
     public static int[][] playingField;
-    public static boolean startGame;
+    public static boolean startGame = false;
 
     /* TODO: Дополнительные поля для создания игры */
 
     /* Стандартные методы для создания игры */
-    public static void startGame() {
+    public static void startGame(Main main) {
+    	app = main;
         startGame = true;
-        playingField = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                playingField[i][j] = 0;
-            }
-        }
     }
 
     /* TODO: Дополнительные методы для создания игры */
@@ -47,5 +42,14 @@ public class Core {
     }
 
     /* TODO: Дополнительные методы обработки нажатых клавиш */
-
+    public static void switchMenu(){
+    	if(isPause == false){
+    		app.hideMenu();
+    		isPause = true;
+    	}
+    	else{
+    		app.showMenu();
+    		isPause = false;
+    	}
+    }
 }
