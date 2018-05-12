@@ -3,10 +3,13 @@ package asd;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import asd.GamesLite.Controller;
 
 public class NumButton extends JButton implements ActionListener {
 
@@ -17,16 +20,20 @@ public class NumButton extends JButton implements ActionListener {
 		this.setHorizontalAlignment(CENTER);
 		this.setVerticalAlignment(CENTER);
 		this.addActionListener(this);
-		this.setText(num.toString()); 
+		this.setText(num.toString());
 		this.setFont(new Font("Verdana", Font.PLAIN, 18));
 		this.arrayField = field;
 		this.arrayPanel = panel;
+		this.addKeyListener(new KeyAdapter(){
+			public void keyPressed(KeyEvent e){
+				Controller.controlKey(e.getKeyCode());
+			}
+		});
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		arrayField.setCellValue(arrayPanel, this.getText());
 	}
-
 }
 

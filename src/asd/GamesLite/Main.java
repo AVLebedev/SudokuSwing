@@ -53,13 +53,11 @@ public class Main {
 	 */
 	public Main() {
 		initialize();
+		showMenu();
 	}
 
-	/**
+	/*
 	 * Initialize the contents of the frame.
-	 */
-	/**
-	 * 
 	 */
 	void initialize() {
 		/* ѕередача обработки нажати€ клавиш контроллеру */
