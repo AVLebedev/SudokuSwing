@@ -264,14 +264,16 @@ public class ArrayField {
 		}
 		return false;
 	}
-	
+
 	public void setCellValue(JPanel arrayPanel, String value){
-		if (Main.currentCell != null){
-			CellPosition pos = Main.currentCell.getPosition();
-			array[pos.x][pos.y] = Integer.parseInt(value);	
-			Main.currentCell.setText(value);
-			highlightCellsByNumber(arrayPanel);
-		}
+		if (Main.currentCell == null || Main.currentCell.isEnabled() == false)
+			return;
+		
+		CellPosition pos = Main.currentCell.getPosition();
+		array[pos.x][pos.y] = Integer.parseInt(value);	
+		Main.currentCell.setText(value);
+		highlightCellsByNumber(arrayPanel);
+
 		int foolCount = 0;
 		for(int i = 0; i < 9; i++)
 			if (IntStream.of(array[i]).anyMatch(x -> x == 0) == false)
