@@ -11,8 +11,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
-class CellPosition {
+class CellPosition implements Serializable {
 	public int x;
 	public int y;
 	public CellPosition(int x, int y){

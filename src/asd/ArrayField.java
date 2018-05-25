@@ -1,12 +1,20 @@
 package asd;
 
-import asd.GamesLite.Core;
 import asd.GamesLite.Main;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.stream.IntStream;
 
 import javax.swing.JFrame;
@@ -14,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
-public class ArrayField {
+public class ArrayField implements Serializable {
 
 
 	private int[][] array;
@@ -168,18 +176,28 @@ public class ArrayField {
 	}
 	
 	public void initStart(int levelNum){
-		levelCounter = levelNum - 1;
-		initNext(true);
+		init(true);
 		saveField();
 	}
-	public void initNext(boolean needInit){
-
+	
+	public void initNext(){
 		if(levelCounter == 4)
 			return;
 		levelCounter++;
+		init(true);
+	}
+	
+	public void initBack(){
+		if(levelCounter == 0)
+			return;
+		levelCounter--;
+		init(true);
+	}
+	
+	private void init(boolean needInitArray){
         panel.removeAll();
 		frame.setTitle("Уровень: " + String.valueOf(levelCounter));
-		if(needInit)
+		if(needInitArray)
 			switch(levelCounter){
 				case 0:
 					initTest();
@@ -196,38 +214,9 @@ public class ArrayField {
 				case 4:
 					init4();
 					break;
-			}		
+			}
 		start();
 		panel.repaint();
-	}
-	
-	public void initBack(){
-
-		if(levelCounter == 0)
-			return;
-		levelCounter--;
-        panel.removeAll();
-		frame.setTitle("Уровень: " + String.valueOf(levelCounter));
-		switch(levelCounter){
-			case 0:
-				initTest();
-				break;
-			case 1:
-				init1();
-				break;
-			case 2:
-				init2();
-				break;
-			case 3:
-				init3();
-				break;
-			case 4:
-				init4();
-				break;
-		}
-		start();
-		panel.repaint();
-
 	}
 	
 	private void finish(){
@@ -239,7 +228,7 @@ public class ArrayField {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 			if(dialogResult == JOptionPane.YES_OPTION){
-		    	initNext(true);
+		    	initNext();
 			}
 		} else {
 			JOptionPane.showMessageDialog(frame, "Вы проиграли! Исправьте ошибки");
@@ -287,18 +276,40 @@ public class ArrayField {
 	}
 	
 	public void saveField(){
-		for(int i=0; i<9; i++){
-			savedArray[i] = array[i].clone();
+		try(ObjectOutput output = new ObjectOutputStream (new FileOutputStream("game.game"))){
+       	   output.writeObject(this);			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		savedLevel = levelCounter;
+//		for(int i=0; i<9; i++){
+//			savedArray[i] = array[i].clone();
+//		}
+//		savedLevel = levelCounter;
 	}
 	
 	public void restoreField(){
-		for(int i=0; i<9; i++){
-			array[i] = savedArray[i].clone();
+		try(ObjectInput input = new ObjectInputStream (new FileInputStream("game.game")))
+        {
+			ArrayField savedField = (ArrayField)input.readObject();
+			this.array = savedField.array.clone(); 
+			this.levelCounter = savedField.levelCounter; 
+        }
+        catch(IOException ex){
+              
+            System.out.println(ex.getMessage());
+        } catch (Throwable cause) {
+			// TODO Auto-generated catch block
+			cause.printStackTrace();
 		}
-		levelCounter = savedLevel;
-		initNext(false);
+//		for(int i=0; i<9; i++){
+//			array[i] = savedArray[i].clone();
+//		}
+//		levelCounter = savedLevel;
+		init(false);
 	}
 
 	public String toString() {

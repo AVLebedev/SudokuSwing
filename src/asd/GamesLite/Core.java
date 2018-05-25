@@ -1,5 +1,13 @@
 package asd.GamesLite;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 import asd.ArrayField;
@@ -51,15 +59,11 @@ public class Core {
     }
     
     public static void saveGame(){
-    	/* ToDo: реализовать запись в файл 
-    	String savedArray = playingField.toString();
-    	*/
     	playingField.saveField();
     	app.hideMenu();
     }
     
     public static void loadGame(){
-    	/* ToDo: реализовать чтение из файла */
     	playingField.restoreField();
     	app.hideMenu();
     }

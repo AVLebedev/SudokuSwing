@@ -167,7 +167,7 @@ public class Main {
 		btnInit2 = new JButton("¬перЄд");
 		btnInit2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initNext(true);
+				arrayField.initNext();
 			}
 		});
 		btnInit2.addKeyListener(keyAdapter);
