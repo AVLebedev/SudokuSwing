@@ -23,8 +23,11 @@ public class Main {
 	private JPanel menuPanel; 
 	
 	private JButton btnMenu;
+	private JButton btnInit;
 	private JButton btnInit1;
 	private JButton btnInit2;
+	private JButton btnResume;
+	private JButton btnSave;
 
 	public static SudokuCell currentCell;
 
@@ -101,20 +104,16 @@ public class Main {
 		btnMenu.setBounds(150, 11, 256, 28);
 		frame.getContentPane().add(btnMenu);
 
-		Main self = this;
-		JButton btnInit = new JButton("Новая игра");
-		JButton btnSave = new JButton("Сохранить");
+		btnInit = new JButton("Новая игра");
+		btnResume = new JButton("Продолжить");
+		btnSave = new JButton("Сохранить");
 		JButton btnLoad = new JButton("Загрузить игру");
 		JButton btnExit = new JButton("Выход");
 		
 		btnInit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (Core.startGame == false) {
-					Controller.start(self, arrayField);
-					arrayField.initStart(0);
-					btnInit.setText("Продолжить");
-					btnSave.setEnabled(true);
-				}
+				startGame();
+				arrayField.initStart();
 				hideMenu();
 			}
 		});
@@ -122,6 +121,17 @@ public class Main {
 		btnInit.setFont(new Font(btnInit.getFont().getFamily(), Font.PLAIN, 20));
 		btnInit.setMaximumSize(new Dimension(200, btnInit.getMaximumSize().height));
 		menuPanel.add(btnInit);
+
+		btnResume.setEnabled(false);
+		btnResume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				hideMenu();
+			}
+		});
+		btnResume.addKeyListener(keyAdapter);
+		btnResume.setFont(new Font(btnResume.getFont().getFamily(), Font.PLAIN, 20));
+		btnResume.setMaximumSize(new Dimension(200, btnResume.getMaximumSize().height));
+		menuPanel.add(btnResume);
 		
 		btnSave.setEnabled(false);
 		btnSave.addActionListener(new ActionListener() {
@@ -136,6 +146,7 @@ public class Main {
 		
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				startGame();
 				Core.loadGame();
 			}
 		});
@@ -191,5 +202,13 @@ public class Main {
 		btnInit1.setVisible(true);
 		btnInit2.setVisible(true);
 		menuPanel.setVisible(false);
+	}
+	
+	private void startGame(){
+		if (Core.startGame == false) {
+			Controller.start(this, arrayField);
+			btnResume.setEnabled(true);
+			btnSave.setEnabled(true);
+		}
 	}
 }

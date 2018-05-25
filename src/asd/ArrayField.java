@@ -26,7 +26,6 @@ public class ArrayField implements Serializable {
 
 
 	private int[][] array;
-    private int[][] savedArray; 
 	private int n;
 	private int m;
 	private JFrame frame;
@@ -36,15 +35,13 @@ public class ArrayField implements Serializable {
 		n = 9;
 		m = 9;
 		array = new int[n][m];
-		savedArray = new int[n][m];
 		this.frame = frame;
 		this.panel = panel;
 	}
 	
 	private int levelCounter;
-	private int savedLevel;
 
-	public void init1() {
+	private void init1() {
 		levelCounter = 1;
 		array = new int[][] {
 				{6, 0, 0, 5, 0, 8, 0, 0, 2},
@@ -59,7 +56,7 @@ public class ArrayField implements Serializable {
 		};
 	}
 	
-	public void init2() {
+	private void init2() {
 		levelCounter = 2;
 		array = new int[][] {
 				{1, 0, 6, 0, 0, 0, 9, 0, 2},
@@ -74,7 +71,7 @@ public class ArrayField implements Serializable {
 		};
 	}
 	
-	public void init3() {
+	private void init3() {
 		levelCounter = 3;
 		array = new int[][] {
 				{0, 3, 6, 0, 8, 7, 2, 0, 0},
@@ -89,7 +86,7 @@ public class ArrayField implements Serializable {
 		};
 	}
 	
-	public void init4() {
+	private void init4() {
 		levelCounter = 4;
 		array = new int[][] {
 				{8, 4, 7, 3, 5, 0, 2, 6, 9},
@@ -104,7 +101,7 @@ public class ArrayField implements Serializable {
 		};
 	}
 	
-	public void initTest() {
+	private void initTest() {
 		levelCounter = 0;
 		array = new int[][] {
 				{8, 4, 7, 3, 5, 1, 2, 6, 9},
@@ -175,9 +172,9 @@ public class ArrayField implements Serializable {
 			}
 	}
 	
-	public void initStart(int levelNum){
+	public void initStart(){
+		levelCounter = 0;
 		init(true);
-		saveField();
 	}
 	
 	public void initNext(){
@@ -285,10 +282,6 @@ public class ArrayField implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		for(int i=0; i<9; i++){
-//			savedArray[i] = array[i].clone();
-//		}
-//		savedLevel = levelCounter;
 	}
 	
 	public void restoreField(){
@@ -305,10 +298,6 @@ public class ArrayField implements Serializable {
 			// TODO Auto-generated catch block
 			cause.printStackTrace();
 		}
-//		for(int i=0; i<9; i++){
-//			array[i] = savedArray[i].clone();
-//		}
-//		levelCounter = savedLevel;
 		init(false);
 	}
 
