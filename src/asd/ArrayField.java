@@ -17,21 +17,24 @@ import javax.swing.JPanel;
 public class ArrayField {
 
 
-	private int [][]array;
+	private int[][] array;
+    private int[][] savedArray; 
 	private int n;
 	private int m;
 	private JFrame frame;
-	JPanel panel;
+	private JPanel panel;
 
 	public ArrayField(JFrame frame, JPanel panel) {
 		n = 9;
 		m = 9;
 		array = new int[n][m];
+		savedArray = new int[n][m];
 		this.frame = frame;
 		this.panel = panel;
 	}
 	
 	private int levelCounter;
+	private int savedLevel;
 
 	public void init1() {
 		levelCounter = 1;
@@ -166,36 +169,36 @@ public class ArrayField {
 	
 	public void initStart(int levelNum){
 		levelCounter = levelNum - 1;
-		initNext();
+		initNext(true);
+		saveField();
 	}
-	public void initNext(){
+	public void initNext(boolean needInit){
 
 		if(levelCounter == 4)
 			return;
 		levelCounter++;
         panel.removeAll();
 		frame.setTitle("Уровень: " + String.valueOf(levelCounter));
-		switch(levelCounter){
-			case 0:
-				initTest();
-				break;
-			case 1:
-				init1();
-				break;
-			case 2:
-				init2();
-				break;
-			case 3:
-				init3();
-				break;
-			case 4:
-				init4();
-				break;
-		}
-		
+		if(needInit)
+			switch(levelCounter){
+				case 0:
+					initTest();
+					break;
+				case 1:
+					init1();
+					break;
+				case 2:
+					init2();
+					break;
+				case 3:
+					init3();
+					break;
+				case 4:
+					init4();
+					break;
+			}		
 		start();
 		panel.repaint();
-
 	}
 	
 	public void initBack(){
@@ -236,7 +239,7 @@ public class ArrayField {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 			if(dialogResult == JOptionPane.YES_OPTION){
-		    	initNext();
+		    	initNext(true);
 			}
 		} else {
 			JOptionPane.showMessageDialog(frame, "Вы проиграли! Исправьте ошибки");
@@ -281,6 +284,21 @@ public class ArrayField {
 				foolCount++;
 			if (foolCount == 9)
 				finish();
+	}
+	
+	public void saveField(){
+		for(int i=0; i<9; i++){
+			savedArray[i] = array[i].clone();
+		}
+		savedLevel = levelCounter;
+	}
+	
+	public void restoreField(){
+		for(int i=0; i<9; i++){
+			array[i] = savedArray[i].clone();
+		}
+		levelCounter = savedLevel;
+		initNext(false);
 	}
 
 	public String toString() {

@@ -49,4 +49,18 @@ public class Core {
     public static void setCellValue(String value){
     	playingField.setCellValue(value);
     }
+    
+    public static void saveGame(){
+    	/* ToDo: реализовать запись в файл 
+    	String savedArray = playingField.toString();
+    	*/
+    	playingField.saveField();
+    	app.hideMenu();
+    }
+    
+    public static void loadGame(){
+    	/* ToDo: реализовать чтение из файла */
+    	playingField.restoreField();
+    	app.hideMenu();
+    }
 }

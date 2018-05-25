@@ -103,12 +103,17 @@ public class Main {
 
 		Main self = this;
 		JButton btnInit = new JButton("Новая игра");
+		JButton btnSave = new JButton("Сохранить");
+		JButton btnLoad = new JButton("Загрузить игру");
+		JButton btnExit = new JButton("Выход");
+		
 		btnInit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (Core.startGame == false) {
 					Controller.start(self, arrayField);
 					arrayField.initStart(0);
 					btnInit.setText("Продолжить");
+					btnSave.setEnabled(true);
 				}
 				hideMenu();
 			}
@@ -118,11 +123,10 @@ public class Main {
 		btnInit.setMaximumSize(new Dimension(200, btnInit.getMaximumSize().height));
 		menuPanel.add(btnInit);
 		
-		JButton btnSave = new JButton("Сохранить");
 		btnSave.setEnabled(false);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//ToDo: реализовать сохранение игры				
+				Core.saveGame();			
 			}
 		});
 		btnSave.addKeyListener(keyAdapter);
@@ -130,21 +134,16 @@ public class Main {
 		btnSave.setMaximumSize(btnInit.getMaximumSize());
 		menuPanel.add(btnSave);
 		
-		JButton btnResume = new JButton("Загрузить игру");
-		btnResume.addActionListener(new ActionListener() {
+		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Core.startGame = true;
-				arrayField.initStart(0);
-				btnInit.setText("Продолжить");
-				hideMenu();
+				Core.loadGame();
 			}
 		});
-		btnResume.addKeyListener(keyAdapter);
-		btnResume.setFont(btnInit.getFont());
-		btnResume.setMaximumSize(btnInit.getMaximumSize());
-		menuPanel.add(btnResume);
+		btnLoad.addKeyListener(keyAdapter);
+		btnLoad.setFont(btnInit.getFont());
+		btnLoad.setMaximumSize(btnInit.getMaximumSize());
+		menuPanel.add(btnLoad);
 		
-		JButton btnExit = new JButton("Выход");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);				
@@ -168,7 +167,7 @@ public class Main {
 		btnInit2 = new JButton("Вперёд");
 		btnInit2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initNext();
+				arrayField.initNext(true);
 			}
 		});
 		btnInit2.addKeyListener(keyAdapter);
