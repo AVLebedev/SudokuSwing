@@ -1,5 +1,6 @@
 package asd.GamesLite;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +11,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
+import javax.swing.JOptionPane;
+
 import asd.ArrayField;
 
 public class Core {
@@ -19,12 +22,14 @@ public class Core {
     private static ArrayField playingField;
     public static boolean startGame = false;
     private static boolean isPause = true;
+    private static String currentUser;
 
     /* Стандартные методы для создания игры */
-    public static void startGame(Main main, ArrayField field) {
+    public static void startGame(Main main, ArrayField field, String user) {
     	app = main;
     	playingField = field;
         startGame = true;
+        currentUser = user;
     }
 
     /* TODO: Дополнительные методы для создания игры */
@@ -55,16 +60,20 @@ public class Core {
     	}
     }    
     public static void setCellValue(String value){
-    	playingField.setCellValue(value);
+    	playingField.setCellValue(value, currentUser);
     }
     
     public static void saveGame(){
-    	playingField.saveField();
+    	playingField.saveField(currentUser);
     	app.hideMenu();
     }
     
-    public static void loadGame(){
-    	playingField.restoreField();
-    	app.hideMenu();
+    public static void loadGame(String user){
+    	if(playingField.restoreField(user)){
+    		currentUser = user;
+    		app.hideMenu();
+    	} else {
+    		JOptionPane.showMessageDialog(null, "Сохранения не найдены!", "", JOptionPane.INFORMATION_MESSAGE);
+    	}
     }
 }

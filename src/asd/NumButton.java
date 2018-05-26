@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
 import asd.GamesLite.Controller;
+import asd.GamesLite.Core;
 
 public class NumButton extends JButton implements ActionListener {
 
@@ -30,7 +31,7 @@ public class NumButton extends JButton implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		arrayField.setCellValue(this.getText());
+		Core.setCellValue(this.getText());
 	}
 }
 

@@ -6,9 +6,11 @@ import java.util.Arrays;
 import asd.ArrayField;
 
 public class Controller {
-	public static void start(Main main, ArrayField field) {
+	String currentUser;
+	
+	public static void start(Main main, ArrayField field, String user) {
 		/* —тандартные методы запуска игры */
-		Core.startGame(main, field);
+		Core.startGame(main, field, user);
 	}
 	
 	//—писок клавиш дл€ простановки значени€ клетки

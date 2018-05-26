@@ -28,8 +28,11 @@ public class Main {
 	private JButton btnInit2;
 	private JButton btnResume;
 	private JButton btnSave;
+	
+//	private JTextField userField;
 
 	public static SudokuCell currentCell;
+	private static String currentUser = "";
 
 	/**
 	 * Launch the application.
@@ -93,7 +96,7 @@ public class Main {
 		panel1 = new ButtonsPanel(arrayField, panel);
 		panel1.setBounds(153, 310, 250, 200);
 		frame.getContentPane().add(panel1);
-
+		
 		btnMenu = new JButton("Меню");
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -109,12 +112,19 @@ public class Main {
 		btnSave = new JButton("Сохранить");
 		JButton btnLoad = new JButton("Загрузить игру");
 		JButton btnExit = new JButton("Выход");
+
+//		userField = new JTextField();
+//		userField.setMaximumSize(new Dimension(200, btnInit.getMaximumSize().height));
+//		menuPanel.add(userField);
 		
 		btnInit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				startGame();
-				arrayField.initStart();
-				hideMenu();
+				checkUser("Новая игра");	
+				if(currentUser.isEmpty() == false){
+					startGame();
+					arrayField.initStart(currentUser);
+					hideMenu();
+				}
 			}
 		});
 		btnInit.addKeyListener(keyAdapter);
@@ -136,18 +146,23 @@ public class Main {
 		btnSave.setEnabled(false);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				checkUser("Сохранение");
 				Core.saveGame();			
 			}
 		});
 		btnSave.addKeyListener(keyAdapter);
 		btnSave.setFont(btnInit.getFont());
 		btnSave.setMaximumSize(btnInit.getMaximumSize());
-		menuPanel.add(btnSave);
+//		menuPanel.add(btnSave);
 		
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				startGame();
-				Core.loadGame();
+				currentUser = "";
+				checkUser("Загрузка");
+//				if(currentUser.isEmpty() == false){
+					startGame();
+					Core.loadGame(currentUser);
+//				}
 			}
 		});
 		btnLoad.addKeyListener(keyAdapter);
@@ -168,7 +183,7 @@ public class Main {
 		btnInit1 = new JButton("Назад");
 		btnInit1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initBack();
+				arrayField.initBack(currentUser);
 			}
 		});
 		btnInit1.addKeyListener(keyAdapter);
@@ -178,7 +193,7 @@ public class Main {
 		btnInit2 = new JButton("Вперёд");
 		btnInit2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				arrayField.initNext();
+				arrayField.initNext(currentUser);
 			}
 		});
 		btnInit2.addKeyListener(keyAdapter);
@@ -206,9 +221,19 @@ public class Main {
 	
 	private void startGame(){
 		if (Core.startGame == false) {
-			Controller.start(this, arrayField);
+			Controller.start(this, arrayField, currentUser);
 			btnResume.setEnabled(true);
 			btnSave.setEnabled(true);
 		}
+	}
+	
+	private void checkUser(String title){
+		do{
+			currentUser = JOptionPane.showInputDialog(null, "Введите имя пользователя", title, JOptionPane.QUESTION_MESSAGE);
+			if(currentUser == null){
+				currentUser = "";
+				return;
+			}
+		} while(currentUser.isEmpty());
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -172,26 +173,32 @@ public class ArrayField implements Serializable {
 			}
 	}
 	
-	public void initStart(){
+	public void initStart(String user){
 		levelCounter = 0;
-		init(true);
+		if(tryLoad(user) == false){
+			init(user, true);
+		}
 	}
 	
-	public void initNext(){
+	public void initNext(String user){
 		if(levelCounter == 4)
 			return;
 		levelCounter++;
-		init(true);
+		if(tryLoad(user) == false){
+			init(user, true);
+		}
 	}
 	
-	public void initBack(){
+	public void initBack(String user){
 		if(levelCounter == 0)
 			return;
 		levelCounter--;
-		init(true);
+		if(tryLoad(user) == false){
+			init(user, true);
+		}
 	}
 	
-	private void init(boolean needInitArray){
+	private void init(String user, boolean needInitArray){
         panel.removeAll();
 		frame.setTitle("Уровень: " + String.valueOf(levelCounter));
 		if(needInitArray)
@@ -214,9 +221,10 @@ public class ArrayField implements Serializable {
 			}
 		start();
 		panel.repaint();
+		saveField(user);
 	}
 	
-	private void finish(){
+	private void finish(String user){
 		resetValidation();
 		if(isValid()){
 			int dialogResult = JOptionPane.showConfirmDialog(frame, 
@@ -225,7 +233,7 @@ public class ArrayField implements Serializable {
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
 			if(dialogResult == JOptionPane.YES_OPTION){
-		    	initNext();
+		    	initNext(user);
 			}
 		} else {
 			JOptionPane.showMessageDialog(frame, "Вы проиграли! Исправьте ошибки");
@@ -255,7 +263,7 @@ public class ArrayField implements Serializable {
 		return false;
 	}
 
-	public void setCellValue(String value){
+	public void setCellValue(String value, String user){
 		if (Main.currentCell == null || Main.currentCell.isEnabled() == false)
 			return;
 		
@@ -268,12 +276,13 @@ public class ArrayField implements Serializable {
 		for(int i = 0; i < 9; i++)
 			if (IntStream.of(array[i]).anyMatch(x -> x == 0) == false)
 				foolCount++;
-			if (foolCount == 9)
-				finish();
+		saveField(user);
+		if (foolCount == 9)
+			finish(user);
 	}
 	
-	public void saveField(){
-		try(ObjectOutput output = new ObjectOutputStream (new FileOutputStream("game.game"))){
+	public void saveField(String user){
+		try(ObjectOutput output = new ObjectOutputStream (new FileOutputStream(user+levelCounter+".game"))){
        	   output.writeObject(this);			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -284,8 +293,8 @@ public class ArrayField implements Serializable {
 		}
 	}
 	
-	public void restoreField(){
-		try(ObjectInput input = new ObjectInputStream (new FileInputStream("game.game")))
+	public boolean restoreField(String user){
+		try(ObjectInput input = new ObjectInputStream (new FileInputStream(user+levelCounter+".game")))
         {
 			ArrayField savedField = (ArrayField)input.readObject();
 			this.array = savedField.array.clone(); 
@@ -298,7 +307,17 @@ public class ArrayField implements Serializable {
 			// TODO Auto-generated catch block
 			cause.printStackTrace();
 		}
-		init(false);
+		init(user, false);
+		return true;
+	}
+	
+	private boolean tryLoad(String user){
+		File savedFile = new File(user + levelCounter + ".game");
+		if(savedFile.exists()){
+			restoreField(user);
+			return true;
+		}
+		return false;
 	}
 
 	public String toString() {
