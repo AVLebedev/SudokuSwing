@@ -159,10 +159,10 @@ public class Main {
 			public void actionPerformed(ActionEvent arg0) {
 				currentUser = "";
 				checkUser("Загрузка");
-//				if(currentUser.isEmpty() == false){
+				if(currentUser.isEmpty() == false){
 					startGame();
 					Core.loadGame(currentUser);
-//				}
+				}
 			}
 		});
 		btnLoad.addKeyListener(keyAdapter);
