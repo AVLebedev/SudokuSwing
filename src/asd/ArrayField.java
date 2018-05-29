@@ -24,7 +24,7 @@ import javax.swing.JPanel;
 
 
 public class ArrayField implements Serializable {
-
+	private final static int MAX_LEVEL = 4;
 
 	private int[][] array;
 	private int n;
@@ -181,7 +181,7 @@ public class ArrayField implements Serializable {
 	}
 	
 	public void initNext(String user){
-		if(levelCounter == 4)
+		if(levelCounter == MAX_LEVEL)
 			return;
 		levelCounter++;
 		if(tryLoad(user) == false){
@@ -227,13 +227,17 @@ public class ArrayField implements Serializable {
 	private void finish(String user){
 		resetValidation();
 		if(isValid()){
-			int dialogResult = JOptionPane.showConfirmDialog(frame, 
-					"Вы выиграли! Перейти на следующий уровень?",
-                    "Победа!",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-			if(dialogResult == JOptionPane.YES_OPTION){
-		    	initNext(user);
+			if(levelCounter == MAX_LEVEL)
+				JOptionPane.showMessageDialog(frame, "Вы выиграли! Игра завершена");
+			else {
+				int dialogResult = JOptionPane.showConfirmDialog(frame, 
+						"Вы выиграли! Перейти на следующий уровень?",
+	                    "Победа!",
+	                    JOptionPane.YES_NO_OPTION,
+	                    JOptionPane.QUESTION_MESSAGE);
+				if(dialogResult == JOptionPane.YES_OPTION){
+			    	initNext(user);
+				}
 			}
 		} else {
 			JOptionPane.showMessageDialog(frame, "Вы проиграли! Исправьте ошибки");
